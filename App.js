@@ -5,7 +5,7 @@ import StackNavigation from './src/providers/StackNavigation';
 
 const App = () => (
   <View style={styles.container}>
-    <StatusBar style="auto" />
+    <StatusBar style="light" />
     <NavigationContainer>
       <StackNavigation />
     </NavigationContainer>

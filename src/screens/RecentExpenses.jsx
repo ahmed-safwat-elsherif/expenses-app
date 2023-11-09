@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
+import ExpensesOutput from '../components/expenses/ExpensesOutput';
+import { EXPENSES } from '../utils/dummyData';
 
-const RecentExpenses = () => <Text>RecentExpenses</Text>;
-
+const RecentExpenses = () => <ExpensesOutput expenses={EXPENSES} periodName="Last 7 days" />;
 export default RecentExpenses;

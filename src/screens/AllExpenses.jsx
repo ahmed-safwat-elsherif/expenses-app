@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+import ExpensesOutput from '../components/expenses/ExpensesOutput';
+import { EXPENSES } from '../utils/dummyData';
 
-const AllExpenses = () => <Text>AllExpenses</Text>;
+const AllExpenses = () => <ExpensesOutput expenses={EXPENSES} periodName="Total" />;
 
 export default AllExpenses;
