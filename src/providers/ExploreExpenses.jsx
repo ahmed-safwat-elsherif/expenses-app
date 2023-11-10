@@ -4,6 +4,7 @@ import AllExpenses from '../screens/AllExpenses';
 import RecentExpenses from '../screens/RecentExpenses';
 import { COLORS } from '../utils/theme';
 import { Ionicons } from '@expo/vector-icons';
+import AddExpenseButton from '../components/expenses/AddExpenseButton';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -14,6 +15,7 @@ const ExploreExpenses = () => (
       headerTintColor: 'white',
       tabBarStyle: { backgroundColor: COLORS.primary500 },
       tabBarActiveTintColor: COLORS.accent500,
+      headerRight: AddExpenseButton,
     }}>
     <BottomTabs.Screen
       name="RecentExpenses"
