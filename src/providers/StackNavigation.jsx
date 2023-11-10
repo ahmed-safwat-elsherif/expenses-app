@@ -3,6 +3,7 @@ import React from 'react';
 import ManageExpenses from '../screens/ManageExpenses';
 import ExploreExpenses from './ExploreExpenses';
 import { COLORS } from '../utils/theme';
+import { ROUTES } from '../routes';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,12 +14,12 @@ const StackNavigation = () => (
       headerTintColor: 'white',
     }}>
     <Stack.Screen
-      name="ExploreExpenses"
+      name={ROUTES.EXPLORE_EXPENSES}
       component={ExploreExpenses}
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="ManageExpenses"
+      name={ROUTES.MANAGE_EXPENSES}
       component={ManageExpenses}
       options={{
         presentation: 'modal',

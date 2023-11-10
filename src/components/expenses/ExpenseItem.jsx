@@ -3,14 +3,15 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../utils/theme';
 import formatDate from '../../utils/formatDate';
+import { ROUTES } from '../../routes';
 
-const ExpenseItem = ({ description, amount, date }) => {
+const ExpenseItem = ({ id: expenseId, description, amount, date }) => {
   const formattedDate = useMemo(() => formatDate(new Date(date)), [date]);
   const { navigate } = useNavigation();
 
   return (
     <Pressable
-      onPress={() => navigate('ManageExpenses')}
+      onPress={() => navigate(ROUTES.MANAGE_EXPENSES, { expenseId, editMode: true })}
       android_ripple={{ color: COLORS.primary700 }}
       style={({ pressed }) => pressed && styles.pressable}>
       <View style={styles.expenseItem}>
