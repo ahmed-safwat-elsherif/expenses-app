@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
-import { Text } from 'react-native';
+import EditExpense from '../components/manageExpenses/EditExpense';
+import AddExpense from '../components/manageExpenses/AddExpense';
 
 const ManageExpenses = () => {
   const { params = {} } = useRoute();
@@ -14,7 +15,7 @@ const ManageExpenses = () => {
     });
   }, [setOptions, editMode]);
 
-  return <Text>ManageExpenses {expenseId}</Text>;
+  return editMode ? <EditExpense id={expenseId} /> : <AddExpense />;
 };
 
 export default ManageExpenses;
