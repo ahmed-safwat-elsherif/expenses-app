@@ -16,7 +16,12 @@ const ExpenseItem = ({ id: expenseId, description, amount, date }) => {
       style={({ pressed }) => pressed && styles.pressable}>
       <View style={styles.expenseItem}>
         <View style={styles.itemInfo}>
-          <Text style={[styles.textBase, styles.description]}>{description}</Text>
+          <Text
+            style={[styles.textBase, styles.description]}
+            ellipsizeMode="tail"
+            numberOfLines={1}>
+            {description}
+          </Text>
           <Text style={[styles.textBase, { textAlign: 'right' }]}>{formattedDate}</Text>
         </View>
         <View style={styles.amountContainer}>
@@ -60,6 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
+    minWidth: 80,
   },
   amount: {
     color: COLORS.primary500,
