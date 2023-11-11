@@ -4,9 +4,9 @@ import ExpenseItem from './ExpenseItem';
 
 const renderItem = ({ item }) => <ExpenseItem {...item} />;
 
-const ExpensesList = ({ expenses }) => (
+const ExpensesList = ({ expenses, ListEmptyComponent }) => (
   <View style={{ flex: 1 }}>
-    <FlatList data={expenses} renderItem={renderItem} />
+    <FlatList ListEmptyComponent={ListEmptyComponent} data={expenses} renderItem={renderItem} />
   </View>
 );
 

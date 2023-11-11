@@ -4,10 +4,10 @@ import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
 import { COLORS } from '../../utils/theme';
 
-const ExpensesOutput = ({ expenses, periodName }) => (
+const ExpensesOutput = ({ expenses, periodName, ListEmptyComponent }) => (
   <View style={styles.container}>
     <ExpensesSummary expenses={expenses} periodName={periodName} />
-    <ExpensesList expenses={expenses} />
+    <ExpensesList ListEmptyComponent={ListEmptyComponent} expenses={expenses} />
   </View>
 );
 

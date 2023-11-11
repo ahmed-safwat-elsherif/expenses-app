@@ -4,13 +4,19 @@ import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../utils/theme';
 import IconButton from '../shared/IconButton';
 import Button from '../shared/Button';
+import useExpenses from '../../hooks/useExpenses';
 
 const EditExpense = ({ id }) => {
   const { goBack } = useNavigation();
+  const { removeExpense } = useExpenses();
+
   const handleDelete = useCallback(() => {
     goBack();
-  }, [id, goBack]);
+    removeExpense(id);
+  }, [id, goBack, removeExpense]);
+
   const handleCancel = useCallback(() => goBack(), [goBack]);
+
   const handleEdit = useCallback(() => {
     goBack();
   }, [goBack]);

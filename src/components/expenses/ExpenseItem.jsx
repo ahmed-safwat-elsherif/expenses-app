@@ -20,7 +20,7 @@ const ExpenseItem = ({ id: expenseId, description, amount, date }) => {
           <Text style={[styles.textBase, { textAlign: 'right' }]}>{formattedDate}</Text>
         </View>
         <View style={styles.amountContainer}>
-          <Text style={styles.amount}>{amount}</Text>
+          <Text style={styles.amount}>${amount}</Text>
         </View>
       </View>
     </Pressable>
