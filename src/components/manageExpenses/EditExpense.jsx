@@ -8,20 +8,26 @@ import ExpenseForm from './ExpenseForm';
 
 const EditExpense = ({ id }) => {
   const { goBack } = useNavigation();
-  const { removeExpense, expenses } = useExpenses();
+  const { removeExpense, expenses, updateExpense } = useExpenses();
 
   const expense = useMemo(() => expenses.find((exp) => exp.id === id), [expenses, id]);
 
   const handleDelete = useCallback(() => {
-    goBack();
-    removeExpense(id);
+    removeExpense(id).then(() => {
+      goBack();
+    });
   }, [id, goBack, removeExpense]);
 
   const handleCancel = useCallback(() => goBack(), [goBack]);
 
-  const handleEdit = useCallback(() => {
-    goBack();
-  }, [goBack]);
+  const handleEdit = useCallback(
+    (data) => {
+      updateExpense(id, data).then(() => {
+        goBack();
+      });
+    },
+    [id, goBack, updateExpense],
+  );
 
   return (
     <View style={styles.container}>
