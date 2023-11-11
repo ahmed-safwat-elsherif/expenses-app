@@ -2,27 +2,27 @@ import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import Button from '../shared/Button';
 import { COLORS } from '../../utils/theme';
 import { StyleSheet } from 'react-native';
+import ExpenseForm from './ExpenseForm';
+import useExpenses from '../../hooks/useExpenses';
 
 const AddExpense = () => {
   const { goBack } = useNavigation();
+  const { addExpense } = useExpenses();
   const handleCancel = useCallback(() => goBack(), [goBack]);
-  const handleAdd = useCallback(() => {
-    goBack();
-  }, [goBack]);
+
+  const handleAdd = useCallback(
+    (data) => {
+      addExpense(data);
+      goBack();
+    },
+    [goBack, addExpense],
+  );
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button variant="text" style={styles.button} onPress={handleCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={handleAdd}>
-          Add
-        </Button>
-      </View>
+      <ExpenseForm submitLabel="Add" onSubmit={handleAdd} onCancel={handleCancel} />
     </View>
   );
 };
@@ -32,15 +32,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: COLORS.primary800,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
   },
 });
 

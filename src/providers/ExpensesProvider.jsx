@@ -17,7 +17,7 @@ const ExpensesProvider = ({ children }) => {
 
   const addExpense = useCallback(({ date, amount, description }) => {
     const newExp = { date, amount, description, id: createRandomId() };
-    setExpenses((prevExp) => [...prevExp, newExp]);
+    setExpenses((prevExp) => [newExp, ...prevExp]);
   }, []);
 
   const removeExpense = useCallback((id) => {

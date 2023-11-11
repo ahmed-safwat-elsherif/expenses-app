@@ -1,14 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../utils/theme';
 import IconButton from '../shared/IconButton';
-import Button from '../shared/Button';
 import useExpenses from '../../hooks/useExpenses';
+import ExpenseForm from './ExpenseForm';
 
 const EditExpense = ({ id }) => {
   const { goBack } = useNavigation();
-  const { removeExpense } = useExpenses();
+  const { removeExpense, expenses } = useExpenses();
+
+  const expense = useMemo(() => expenses.find((exp) => exp.id === id), [expenses, id]);
 
   const handleDelete = useCallback(() => {
     goBack();
@@ -23,14 +25,12 @@ const EditExpense = ({ id }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button variant="text" style={styles.button} onPress={handleCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={handleEdit}>
-          Update
-        </Button>
-      </View>
+      <ExpenseForm
+        defaultValues={expense}
+        onSubmit={handleEdit}
+        onCancel={handleCancel}
+        submitLabel="Update"
+      />
       <View style={styles.deleteContainer}>
         <IconButton name="trash" color={COLORS.error500} size={36} onPress={handleDelete} />
       </View>
@@ -43,15 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: COLORS.primary800,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
   },
   deleteContainer: {
     marginTop: 16,
