@@ -1,26 +1,55 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Input from '../shared/Input';
-import { fontSize } from '../../utils/theme';
+import { COLORS, fontSize } from '../../utils/theme';
 import Button from '../shared/Button';
 
 const initialValues = {
   amount: '',
-  date: null,
+  date: '',
   description: '',
 };
+
+const validate = (expense) => {
+  const errors = {};
+
+  const inValidAmount = isNaN(expense.amount) || expense.amount <= 0;
+  const inValidDate = new Date(expense.date).toString() === 'Invalid Date';
+  const inValidDesc = expense.description.trim().length === 0;
+
+  if (inValidAmount) errors.amount = 'Invalid amount';
+  if (inValidDate) errors.date = 'Invalid amount';
+  if (inValidDesc) errors.description = 'Invalid description';
+
+  return {
+    errors,
+    invalid: inValidAmount || inValidDate || inValidDesc,
+  };
+};
+
 const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel }) => {
   const [expense, setExpense] = useState({ ...initialValues, ...defaultValues });
+  const [formState, setFormState] = useState({ errors: {}, isSubmitted: false, invalid: false });
+
+  const isFormValid = useMemo(() => {
+    const { isSubmitted, invalid } = formState;
+    if (!isSubmitted) return true;
+    return !invalid;
+  }, [formState]);
 
   const handleChange = useCallback((name, value) => {
     setExpense((prevState) => ({ ...prevState, [name]: value }));
   }, []);
 
   const handleSubmit = useCallback(() => {
-    onSubmit({
+    const data = {
       ...expense,
       amount: +expense.amount,
-    });
+    };
+    const { errors, invalid } = validate(data);
+    setFormState({ errors, isSubmitted: true, invalid });
+    if (invalid) return;
+    onSubmit(data);
   }, [expense, onSubmit]);
 
   return (
@@ -30,6 +59,7 @@ const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel })
         <Input
           rootStyles={styles.formGroupField}
           label="Amount"
+          error={formState.errors.amount}
           textInputProps={{
             keyboardType: 'decimal-pad',
             onChangeText: (value) => handleChange('amount', value),
@@ -39,6 +69,7 @@ const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel })
         <Input
           rootStyles={styles.formGroupField}
           label="Date"
+          error={formState.errors.date}
           textInputProps={{
             placeholder: 'YYYY-MM-DD',
             maxLength: 10,
@@ -49,6 +80,7 @@ const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel })
       </View>
       <Input
         label="Description"
+        error={formState.errors.description}
         textInputProps={{
           multiline: true,
           autoCorrect: false,
@@ -56,6 +88,11 @@ const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel })
           value: expense.description,
         }}
       />
+      {!isFormValid && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Please check your entered values</Text>
+        </View>
+      )}
       <View style={styles.buttons}>
         <Button variant="text" style={styles.button} onPress={onCancel}>
           Cancel
@@ -88,6 +125,15 @@ const styles = StyleSheet.create({
   },
   formGroupField: {
     flex: 1,
+  },
+  errorContainer: {
+    padding: 6,
+    borderRadius: 6,
+    backgroundColor: COLORS.error500,
+  },
+  errorText: {
+    color: COLORS.primary50,
+    fontSize: fontSize(14),
   },
   buttons: {
     marginTop: 16,

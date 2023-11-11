@@ -4,17 +4,18 @@ import { COLORS, fontSize } from '../../utils/theme';
 
 /**
  *
- * @param {{label:string,rootStyles:import('react-native').StyleProp<import('react-native').ViewStyle>, textInputProps:import('react-native').TextInputProps}} param0
+ * @param {{label:string,error:boolean, rootStyles:import('react-native').StyleProp<import('react-native').ViewStyle>, textInputProps:import('react-native').TextInputProps}} param0
  * @returns
  */
-const Input = ({ label, rootStyles, textInputProps = {} }) => (
+const Input = ({ label, error, rootStyles, textInputProps = {} }) => (
   <View style={rootStyles}>
-    <Text style={styles.label}>{label}</Text>
+    <Text style={[styles.label, error && styles.errorLabel]}>{label}</Text>
     <TextInput
       {...textInputProps}
       style={[
         styles.input,
         textInputProps?.multiline && styles.inputMultiline,
+        error && styles.errorInput,
         textInputProps?.style,
       ]}
     />
@@ -37,6 +38,12 @@ const styles = StyleSheet.create({
   inputMultiline: {
     minHeight: 100,
     textAlignVertical: 'top',
+  },
+  errorLabel: {
+    color: COLORS.error500,
+  },
+  errorInput: {
+    backgroundColor: COLORS.error50,
   },
 });
 
