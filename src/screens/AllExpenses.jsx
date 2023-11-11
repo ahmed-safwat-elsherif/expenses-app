@@ -1,7 +1,17 @@
 import React from 'react';
 import ExpensesOutput from '../components/expenses/ExpensesOutput';
-import { EXPENSES } from '../utils/dummyData';
+import useExpenses from '../hooks/useExpenses';
+import EmptyExpenses from '../components/expenses/EmptyExpenses';
 
-const AllExpenses = () => <ExpensesOutput expenses={EXPENSES} periodName="Total" />;
+const AllExpenses = () => {
+  const { expenses } = useExpenses();
+  return (
+    <ExpensesOutput
+      expenses={expenses}
+      periodName="Total"
+      ListEmptyComponent={() => <EmptyExpenses message="No expenses were added" />}
+    />
+  );
+};
 
 export default AllExpenses;

@@ -4,6 +4,8 @@ import AllExpenses from '../screens/AllExpenses';
 import RecentExpenses from '../screens/RecentExpenses';
 import { COLORS } from '../utils/theme';
 import { Ionicons } from '@expo/vector-icons';
+import AddExpenseButton from '../components/expenses/AddExpenseButton';
+import { ROUTES } from '../routes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -14,9 +16,10 @@ const ExploreExpenses = () => (
       headerTintColor: 'white',
       tabBarStyle: { backgroundColor: COLORS.primary500 },
       tabBarActiveTintColor: COLORS.accent500,
+      headerRight: AddExpenseButton,
     }}>
     <BottomTabs.Screen
-      name="RecentExpenses"
+      name={ROUTES.RECENT_EXPENSES}
       component={RecentExpenses}
       options={{
         title: 'Recent Expenses',
@@ -25,7 +28,7 @@ const ExploreExpenses = () => (
       }}
     />
     <BottomTabs.Screen
-      name="AllExpenses"
+      name={ROUTES.ALL_EXPENSES}
       component={AllExpenses}
       options={{
         title: 'All Expenses',

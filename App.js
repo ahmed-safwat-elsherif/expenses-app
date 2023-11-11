@@ -2,13 +2,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import StackNavigation from './src/providers/StackNavigation';
+import ExpensesProvider from './src/providers/ExpensesProvider';
 
 const App = () => (
   <View style={styles.container}>
     <StatusBar style="light" />
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <ExpensesProvider>
+      <NavigationContainer>
+        <StackNavigation />
+      </NavigationContainer>
+    </ExpensesProvider>
   </View>
 );
 

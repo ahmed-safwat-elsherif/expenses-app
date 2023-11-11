@@ -1,22 +1,26 @@
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../utils/theme';
 import formatDate from '../../utils/formatDate';
+import { ROUTES } from '../../routes';
 
-const ExpenseItem = ({ description, amount, date }) => {
+const ExpenseItem = ({ id: expenseId, description, amount, date }) => {
   const formattedDate = useMemo(() => formatDate(new Date(date)), [date]);
+  const { navigate } = useNavigation();
 
   return (
     <Pressable
+      onPress={() => navigate(ROUTES.MANAGE_EXPENSES, { expenseId, editMode: true })}
       android_ripple={{ color: COLORS.primary700 }}
-      style={({ pressed }) => (pressed ? styles.pressable : null)}>
+      style={({ pressed }) => pressed && styles.pressable}>
       <View style={styles.expenseItem}>
         <View style={styles.itemInfo}>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
           <Text style={[styles.textBase, { textAlign: 'right' }]}>{formattedDate}</Text>
         </View>
         <View style={styles.amountContainer}>
-          <Text style={styles.amount}>{amount}</Text>
+          <Text style={styles.amount}>${amount}</Text>
         </View>
       </View>
     </Pressable>
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
   },
-  itemInfo: { flex: 1 },
+  itemInfo: { flex: 1, paddingRight: 10 },
   textBase: {
     color: COLORS.primary50,
   },
