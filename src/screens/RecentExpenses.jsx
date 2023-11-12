@@ -3,9 +3,10 @@ import ExpensesOutput from '../components/expenses/ExpensesOutput';
 import useExpenses from '../hooks/useExpenses';
 import subtractDays from '../utils/subtractDays';
 import EmptyExpenses from '../components/expenses/EmptyExpenses';
+import ErrorOverlay from '../components/shared/ErrorOverlay';
 
 const RecentExpenses = () => {
-  const { expenses } = useExpenses();
+  const { expenses, error, retry } = useExpenses();
 
   const recentExp = useMemo(
     () =>
@@ -16,6 +17,10 @@ const RecentExpenses = () => {
       }),
     [expenses],
   );
+
+  if (error) {
+    return <ErrorOverlay confirmLabel="OK" message="Couldn't get expenses!" onConfirm={retry} />;
+  }
 
   return (
     <ExpensesOutput

@@ -3,13 +3,22 @@ import { StyleSheet, View } from 'react-native';
 import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
 import { COLORS } from '../../utils/theme';
+import useExpenses from '../../hooks/useExpenses';
 
-const ExpensesOutput = ({ expenses, periodName, ListEmptyComponent }) => (
-  <View style={styles.container}>
-    <ExpensesSummary expenses={expenses} periodName={periodName} />
-    <ExpensesList ListEmptyComponent={ListEmptyComponent} expenses={expenses} />
-  </View>
-);
+const ExpensesOutput = ({ expenses, periodName, ListEmptyComponent }) => {
+  const { retry, loading } = useExpenses();
+  return (
+    <View style={styles.container}>
+      <ExpensesSummary expenses={expenses} periodName={periodName} />
+      <ExpensesList
+        loading={loading}
+        ListEmptyComponent={ListEmptyComponent}
+        expenses={expenses}
+        onRefresh={retry}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
