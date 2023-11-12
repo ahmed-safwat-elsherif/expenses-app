@@ -6,6 +6,7 @@ export const ExpensesContext = createContext({
   expenses: EXPENSES,
   error: null,
   loading: false,
+  retry: () => Promise.resolve(),
   // eslint-disable-next-line no-unused-vars
   addExpense: ({ date, amount, description }) => Promise.resolve({ name: '' }),
   // eslint-disable-next-line no-unused-vars
@@ -15,7 +16,7 @@ export const ExpensesContext = createContext({
 });
 
 const ExpensesProvider = ({ children }) => {
-  const [expenses, setExpenses] = useState(EXPENSES);
+  const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -52,18 +53,25 @@ const ExpensesProvider = ({ children }) => {
     [],
   );
 
-  useEffect(() => {
-    setLoading(true),
-      getExpenses()
-        .then(({ data }) => {
-          const allExpenses = Object.entries(data).map(([key, value]) => ({ id: key, ...value }));
-          setExpenses(allExpenses.reverse());
-        })
-        .catch(setError)
-        .finally(() => {
-          setLoading(true);
-        });
+  const fetchExpenses = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    getExpenses()
+      .then(({ data }) => {
+        const allExpenses = Object.entries(data).map(([key, value]) => ({ id: key, ...value }));
+        setExpenses(allExpenses.reverse());
+      })
+      .catch(setError)
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  const retry = useCallback(() => fetchExpenses(), [fetchExpenses]);
+
+  useEffect(() => {
+    fetchExpenses();
+  }, [fetchExpenses]);
 
   const contextValues = useMemo(
     () => ({
@@ -73,8 +81,9 @@ const ExpensesProvider = ({ children }) => {
       addExpense,
       removeExpense,
       updateExpense,
+      retry,
     }),
-    [expenses, addExpense, removeExpense, updateExpense, loading, error],
+    [expenses, addExpense, removeExpense, updateExpense, loading, error, retry],
   );
 
   return <ExpensesContext.Provider value={contextValues}>{children}</ExpensesContext.Provider>;

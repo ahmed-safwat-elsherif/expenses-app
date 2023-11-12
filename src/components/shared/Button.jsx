@@ -1,11 +1,20 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { COLORS } from '../../utils/theme';
 
-const Button = ({ children, onPress, variant, style }) => (
+const Button = ({ children, onPress, variant, loading, disabled, style }) => (
   <View style={style}>
-    <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable
+      onPress={onPress}
+      disabled={loading || disabled}
+      style={({ pressed }) => pressed && styles.pressed}>
       <View style={[styles.button, variant === 'text' && styles.flat]}>
-        <Text style={[styles.buttonText, variant === 'text' && styles.flatText]}>{children}</Text>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={variant === 'text' ? 'white' : 'black'} />
+          </View>
+        ) : (
+          <Text style={[styles.buttonText, variant === 'text' && styles.flatText]}>{children}</Text>
+        )}
       </View>
     </Pressable>
   </View>
@@ -31,6 +40,12 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     backgroundColor: COLORS.primary100,
     borderRadius: 4,
+  },
+  loadingContainer: {
+    flex: 1,
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

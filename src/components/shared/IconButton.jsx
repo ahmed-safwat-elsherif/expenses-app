@@ -1,16 +1,25 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 /**
  *
- * @param {import('react').ComponentProps<typeof import('@expo/vector-icons').Ionicons> & {onPress?:import('react-native').PressableProps['onPress']}} param0
+ * @param {import('react').ComponentProps<typeof import('@expo/vector-icons').Ionicons> & {onPress?:import('react-native').PressableProps['onPress'],loading:boolean, disabled:boolean}} param0
  * @returns
  */
-const IconButton = ({ onPress, ...iconProps }) => (
-  <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+const IconButton = ({ loading, disabled, onPress, ...iconProps }) => (
+  <Pressable
+    disabled={loading || disabled}
+    onPress={onPress}
+    style={({ pressed }) => pressed && styles.pressed}>
     <View style={styles.buttonContainer}>
-      <Ionicons {...iconProps} />
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="white" />
+        </View>
+      ) : (
+        <Ionicons {...iconProps} />
+      )}
     </View>
   </Pressable>
 );
@@ -23,6 +32,11 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.75,
+  },
+  loadingContainer: {
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

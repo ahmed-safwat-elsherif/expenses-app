@@ -27,7 +27,7 @@ const validate = (expense) => {
   };
 };
 
-const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel }) => {
+const ExpenseForm = ({ isSubmitting, defaultValues, submitLabel = 'Add', onSubmit, onCancel }) => {
   const [expense, setExpense] = useState({ ...initialValues, ...defaultValues });
   const [formState, setFormState] = useState({ errors: {}, isSubmitted: false, invalid: false });
 
@@ -94,10 +94,10 @@ const ExpenseForm = ({ defaultValues, submitLabel = 'Add', onSubmit, onCancel })
         </View>
       )}
       <View style={styles.buttons}>
-        <Button variant="text" style={styles.button} onPress={onCancel}>
+        <Button disabled={isSubmitting} variant="text" style={styles.button} onPress={onCancel}>
           Cancel
         </Button>
-        <Button style={styles.button} onPress={handleSubmit}>
+        <Button loading={isSubmitting} style={styles.button} onPress={handleSubmit}>
           {submitLabel}
         </Button>
       </View>
